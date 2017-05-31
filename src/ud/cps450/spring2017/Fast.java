@@ -22,57 +22,36 @@ import java.util.StringTokenizer;
 
 public class Fast {
 
-	static ArrayList<ArrayList<Point>> findSlopes(ArrayList<Point> points) {
+	static ArrayList<ArrayList<Point>> findSlopes(Point p, ArrayList<Point> points) {
 
 		ArrayList<ArrayList<Point>> lineList = new ArrayList<ArrayList<Point>>();
 
-		// find slopes of points in regard to the point we are currently looking
-		// at
-		for (Point p : points) {
-			// copy points list
-			ArrayList<Point> pointsCopy = new ArrayList<Point>();
-			// make a deep copy
-			for (Point p1 : points) {
-				if (p.compareTo(p1) <= 0) {
-					// do nothing
-				} else {
-					pointsCopy.add(new Point(p1.getX(), p1.getY()));
+		// iterate through array and find like slopes and put them into a
+		// list and delete them from arraylist
+		for (Point point : points) {
+			// find slope of p and point
+			double slope = p.slopeTo(point);
+			ArrayList<Point> line = new ArrayList<Point>();
+			for (Point p2 : points) {
+				if (p.slopeTo(p2) == slope) {
+					line.add(p2);
+					points.remove(p2);
 				}
 			}
-
-			// remove all points that are smaller than p to prevent permutations
-//			for (Point point : pointsCopy) {
-//				if (p.compareTo(point) <= 0) {
-//					pointsCopy.remove(point);
-//				}
-//			}
-
-			// iterate through array and find like slopes and put them into a
-			// list and delete them from arraylist
-			for (Point point : pointsCopy) {
-				// find slope of p and point
-				double slope = p.slopeTo(point);
-				ArrayList<Point> line = new ArrayList<Point>();
-				for (Point p2 : pointsCopy) {
-					if (p.slopeTo(p2) == slope) {
-						line.add(p2);
-						pointsCopy.remove(p2);
-					}
-				}
-				if (lineList != null) {
-					line.add(0, p);
+			if (line != null) {
+				line.add(0, p);
+				if (line.size() >= 4) {
 					lineList.add(line);
 				}
 			}
-
-			// Go through line list and remove the ones that are smaller than 4
-			for (ArrayList<Point> line : lineList) {
-				if (line.size() < 4) {
-					line.remove(line);
-				}
-			}
-
 		}
+
+		// Go through line list and remove the ones that are smaller than 4
+		// for (ArrayList<Point> line : lineList) {
+		// if (line.size() < 4) {
+		// line.remove(line);
+		// }
+		// }
 		return lineList;
 	}
 
@@ -130,7 +109,7 @@ public class Fast {
 		Scanner s = new Scanner(System.in);
 		String path = s.nextLine();
 		ArrayList<Point> points = new ArrayList<Point>();
-		ArrayList<ArrayList<Point>> lines = new ArrayList<ArrayList<Point>>();
+		ArrayList<ArrayList<ArrayList<Point>>> lines = new ArrayList<ArrayList<ArrayList<Point>>>();
 
 		try {
 			points = readInput(path);
@@ -144,10 +123,11 @@ public class Fast {
 		// convert ArrayList into an array
 		Point[] pointsArray = points.toArray(new Point[points.size()]);
 
-		Point point = points.remove(0);
-		findSlopes(point, points);
-		
-		outputLines(findSlopes(points));
+		for (Point point : points) {
+			lines.add(findSlopes(point, points));
+		}
+
+		// outputLines(findSlopes(points));
 
 	}
 
