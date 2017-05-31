@@ -78,7 +78,13 @@ public class Point implements Comparable<Point> {
 		}
 	}
 
+	public int getX() {
+		return this.x;
+	}
 	
+	public int getY() {
+		return this.y;
+	}
 	// return string representation of this point (x, y)
 	public String toString() {
 		return "(" + x + ", " + y + ")";

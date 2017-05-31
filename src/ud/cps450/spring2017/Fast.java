@@ -16,74 +16,64 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Fast {
 
-	static ArrayList<ArrayList<Point>> findSlopes(Point[] points) {
-		double previousSlope = 0;
-		double currentSlope;
-		int slopeCounter = 0;
-		boolean foundIt = false;
-		int counter = 0;
-		ArrayList<ArrayList<Point>> lineList = new ArrayList<ArrayList<Point>>();
+	static ArrayList<ArrayList<Point>> findSlopes(ArrayList<Point> points) {
 
-		int j = 0;
-		// Make a copy of the array so we don't check the same points twice
-		Point[] pointsCopy = new Point[points.length];
-		System.arraycopy(points, 0, pointsCopy, 0, points.length);
+		ArrayList<ArrayList<Point>> lineList = new ArrayList<ArrayList<Point>>();
 
 		// find slopes of points in regard to the point we are currently looking
 		// at
-		for (Point p : pointsCopy) {
-			// counter = 0;
-			Arrays.sort(points, 0, points.length, p.SLOPE_ORDER);
-			System.out.println("For point p: " + p);
-			for (Point p2 : points) {
-				System.out.println(p2);
-			}
-			// System.out.println("Entering for loop");
-			// initial slope check
-			// for (; counter < points.length && !foundIt; counter++) {
-			// System.out.println("Made it past for loop");
-			// if (p.compareTo(points[counter]) > 0) {
-			// System.out.println("Found one!");
-			// previousSlope = p.slopeTo(points[0]);
-			// foundIt = true;
-			// }
-			// }
-
-			// check the rest
-			for (counter = 0, slopeCounter = 0; counter < points.length; counter++) {
-				// to prevent permutations compare points
-				if (p.compareTo(points[counter]) > 0) {
-					// execute slope comparison
-					currentSlope = p.slopeTo(points[counter]);
-					if (currentSlope == previousSlope) {
-						slopeCounter++;
-					} else {
-						// check slope counter; if >= 3, then add points to list
-						// if (slopeCounter >= 3) {
-						ArrayList<Point> pointList = new ArrayList<Point>();
-						pointList.add(p);
-						while (slopeCounter > 0) {
-							pointList.add(points[counter - slopeCounter]);
-							slopeCounter--;
-						}
-						lineList.add(pointList);
-
-						// }
-					}
-					previousSlope = currentSlope;
-					// counter = 0;
+		for (Point p : points) {
+			// copy points list
+			ArrayList<Point> pointsCopy = new ArrayList<Point>();
+			// make a deep copy
+			for (Point p1 : points) {
+				if (p.compareTo(p1) <= 0) {
+					// do nothing
+				} else {
+					pointsCopy.add(new Point(p1.getX(), p1.getY()));
 				}
+			}
 
+			// remove all points that are smaller than p to prevent permutations
+//			for (Point point : pointsCopy) {
+//				if (p.compareTo(point) <= 0) {
+//					pointsCopy.remove(point);
+//				}
+//			}
+
+			// iterate through array and find like slopes and put them into a
+			// list and delete them from arraylist
+			for (Point point : pointsCopy) {
+				// find slope of p and point
+				double slope = p.slopeTo(point);
+				ArrayList<Point> line = new ArrayList<Point>();
+				for (Point p2 : pointsCopy) {
+					if (p.slopeTo(p2) == slope) {
+						line.add(p2);
+						pointsCopy.remove(p2);
+					}
+				}
+				if (lineList != null) {
+					line.add(0, p);
+					lineList.add(line);
+				}
+			}
+
+			// Go through line list and remove the ones that are smaller than 4
+			for (ArrayList<Point> line : lineList) {
+				if (line.size() < 4) {
+					line.remove(line);
+				}
 			}
 
 		}
 		return lineList;
-
 	}
 
 	static ArrayList<Point> readInput(String filepath) throws IOException {
@@ -128,7 +118,7 @@ public class Fast {
 				System.out.print(p + "->");
 			}
 			// draw lines
-			//pl.get(1).drawTo(pl.get(3));
+			// pl.get(1).drawTo(pl.get(3));
 
 		}
 	}
@@ -154,7 +144,10 @@ public class Fast {
 		// convert ArrayList into an array
 		Point[] pointsArray = points.toArray(new Point[points.size()]);
 
-		outputLines(findSlopes(pointsArray));
+		Point point = points.remove(0);
+		findSlopes(point, points);
+		
+		outputLines(findSlopes(points));
 
 	}
 
