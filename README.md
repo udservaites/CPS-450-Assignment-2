@@ -68,7 +68,11 @@ file to import to my library folder, so I copied the code and createda  class fo
 used to draw the coordinate plane, points, and lines used in Brute and Fast. 
 
 
+## makefile
 
+There is a makefile included with this project to make compiling easier. It is not required 
+for using this program. You can use javac *java in the command line to compile and then run
+Brute and Fast. 
 
 
 

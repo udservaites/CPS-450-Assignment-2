@@ -126,14 +126,15 @@ public class Brute {
 		// TODO Auto-generated method stub
 
 		// check command line arguments
-		/*
-		 * if (args.length < 2) { System.err.println("Brute format: <filepath>"
-		 * ); System.exit(1); }
-		 */
 
-		System.out.println("Enter the filepath: ");
-		Scanner s = new Scanner(System.in);
-		String path = s.nextLine();
+		if (args.length < 2) {
+			System.err.println("Brute format: <filepath>");
+			System.exit(1);
+		}
+		
+		// System.out.println("Enter the filepath: ");
+		// Scanner s = new Scanner(System.in);
+		 String path = args[1]; //s.nextLine();
 		ArrayList<Point> points = new ArrayList<Point>();
 		try {
 			points = readInput(path);

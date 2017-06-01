@@ -132,10 +132,16 @@ public class Fast {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		if (args.length < 2) {
+			System.err.println("Brute format: <filepath>");
+			System.exit(1);
+		}
+		
 
-		System.out.println("Enter the filepath: ");
-		Scanner s = new Scanner(System.in);
-		String path = s.nextLine();
+		//System.out.println("Enter the filepath: ");
+		//Scanner s = new Scanner(System.in);
+		String path = args[1]; //s.nextLine();
 		ArrayList<Point> points = new ArrayList<Point>();
 
 		try {
