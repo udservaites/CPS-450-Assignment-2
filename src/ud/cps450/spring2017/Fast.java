@@ -16,43 +16,68 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Fast {
 
-	static ArrayList<ArrayList<Point>> findSlopes(Point p, ArrayList<Point> points) {
+	static ArrayList<ArrayList<Point>> findSlopes(ArrayList<Point> points) {
+		ArrayList<ArrayList<Point>> linesList = new ArrayList<ArrayList<Point>>();
+		Point[] pointArray = points.toArray(new Point[points.size()]);
 
-		ArrayList<ArrayList<Point>> lineList = new ArrayList<ArrayList<Point>>();
-
-		// iterate through array and find like slopes and put them into a
-		// list and delete them from arraylist
-		for (Point point : points) {
-			// find slope of p and point
-			double slope = p.slopeTo(point);
-			ArrayList<Point> line = new ArrayList<Point>();
-			for (Point p2 : points) {
-				if (p.slopeTo(p2) == slope) {
-					line.add(p2);
-					points.remove(p2);
-				}
+		for (Point p : points) {
+			Arrays.sort(pointArray, p.SLOPE_ORDER); // sort by slope to p
+			System.out.println("Sorted");
+			for (Point p2 : pointArray) {
+				System.out.println(p2);
 			}
-			if (line != null) {
-				line.add(0, p);
-				if (line.size() >= 4) {
-					lineList.add(line);
+			// Point p = points[0];
+			ArrayList<Point> line = new ArrayList<Point>();
+			// set point at beginning of list
+			line.add(0, p);
+
+			double previousSlope = p.slopeTo(pointArray[0]);
+			int pointsInLine = 1;
+			// iterate through array to find like slopes and add them to the
+			// line list
+			for (int i = 0; i < pointArray.length; i++) {
+
+				if (p.compareTo(pointArray[i]) >= 0) { // to prevent
+														// permutations
+					double currentSlope = p.slopeTo(pointArray[i]); // get slope
+																	// of
+																	// p
+					// with current
+					// point
+					if (currentSlope == previousSlope) { // if slopes are the
+															// same add point to
+															// line
+						line.add(pointArray[i]);
+						System.out.println("Line print: " + line);
+						pointsInLine++;
+					} else {
+						//if (pointsInLine >= 3) {
+							// add to return list
+							linesList.add(line);
+						//}
+						// reset points in a line
+						pointsInLine = 1;
+
+					}
+					previousSlope = currentSlope;
 				}
+				
 			}
 		}
+		System.out.println("Test");
+		for (ArrayList<Point> line : linesList) {
+			for (Point p : line) {
+				System.out.println(p);
+			}
 
-		// Go through line list and remove the ones that are smaller than 4
-		// for (ArrayList<Point> line : lineList) {
-		// if (line.size() < 4) {
-		// line.remove(line);
-		// }
-		// }
-		return lineList;
+		}
+		return linesList;
+
 	}
 
 	static ArrayList<Point> readInput(String filepath) throws IOException {
@@ -98,6 +123,7 @@ public class Fast {
 			}
 			// draw lines
 			// pl.get(1).drawTo(pl.get(3));
+			System.out.println("\n");
 
 		}
 	}
@@ -109,7 +135,8 @@ public class Fast {
 		Scanner s = new Scanner(System.in);
 		String path = s.nextLine();
 		ArrayList<Point> points = new ArrayList<Point>();
-		ArrayList<ArrayList<ArrayList<Point>>> lines = new ArrayList<ArrayList<ArrayList<Point>>>();
+		// ArrayList<ArrayList<ArrayList<Point>>> lines = new
+		// ArrayList<ArrayList<ArrayList<Point>>>();
 
 		try {
 			points = readInput(path);
@@ -121,13 +148,13 @@ public class Fast {
 			System.exit(1);
 		}
 		// convert ArrayList into an array
-		Point[] pointsArray = points.toArray(new Point[points.size()]);
+		// Point[] pointsArray = points.toArray(new Point[points.size()]);
 
-		for (Point point : points) {
-			lines.add(findSlopes(point, points));
-		}
+		// for (Point point : points) {
+		// //lines.add(findSlopes(point, points));
+		// }
 
-		// outputLines(findSlopes(points));
+		outputLines(findSlopes(points));
 
 	}
 
