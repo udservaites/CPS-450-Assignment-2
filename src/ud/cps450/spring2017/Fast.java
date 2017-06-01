@@ -24,15 +24,16 @@ public class Fast {
 	static ArrayList<ArrayList<Point>> findSlopes(ArrayList<Point> points) {
 		ArrayList<ArrayList<Point>> linesList = new ArrayList<ArrayList<Point>>();
 		Point[] pointArray = points.toArray(new Point[points.size()]);
+		ArrayList<Point> line = new ArrayList<Point>();
 
 		for (Point p : points) {
 			Arrays.sort(pointArray, p.SLOPE_ORDER); // sort by slope to p
-			System.out.println("Sorted");
-			for (Point p2 : pointArray) {
-				System.out.println(p2);
-			}
+			// System.out.println("Sorted");
+			/*
+			 * for (Point p2 : pointArray) { System.out.println(p2); }
+			 */
 			// Point p = points[0];
-			ArrayList<Point> line = new ArrayList<Point>();
+
 			// set point at beginning of list
 			line.add(0, p);
 
@@ -53,27 +54,28 @@ public class Fast {
 															// same add point to
 															// line
 						line.add(pointArray[i]);
-						System.out.println("Line print: " + line);
+						// System.out.println("Line print: " + line);
 						pointsInLine++;
 					} else {
-						//if (pointsInLine >= 3) {
+						if (pointsInLine >= 3) {
 							// add to return list
 							linesList.add(line);
-						//}
+
+						}
 						// reset points in a line
 						pointsInLine = 1;
 
 					}
 					previousSlope = currentSlope;
+					line.clear();
 				}
-				
+
 			}
-		}
-		System.out.println("Test");
-		for (ArrayList<Point> line : linesList) {
-			for (Point p : line) {
-				System.out.println(p);
-			}
+
+			/*
+			 * System.out.println("Test"); for (ArrayList<Point> line :
+			 * linesList) { for (Point p : line) { System.out.println(p); }
+			 */
 
 		}
 		return linesList;
@@ -121,8 +123,8 @@ public class Fast {
 			for (Point p : pl) {
 				System.out.print(p + "->");
 			}
-			// draw lines
-			// pl.get(1).drawTo(pl.get(3));
+			// draw lines /
+			pl.get(0).drawTo(pl.get(pl.size()-1));
 			System.out.println("\n");
 
 		}
@@ -135,26 +137,15 @@ public class Fast {
 		Scanner s = new Scanner(System.in);
 		String path = s.nextLine();
 		ArrayList<Point> points = new ArrayList<Point>();
-		// ArrayList<ArrayList<ArrayList<Point>>> lines = new
-		// ArrayList<ArrayList<ArrayList<Point>>>();
 
 		try {
 			points = readInput(path);
-			for (Point p : points) {
-				System.out.println(p.toString());
-			}
+			outputLines(findSlopes(points));
+
 		} catch (IOException e) {
 			System.err.println("Could not read file. Please try again later.");
 			System.exit(1);
 		}
-		// convert ArrayList into an array
-		// Point[] pointsArray = points.toArray(new Point[points.size()]);
-
-		// for (Point point : points) {
-		// //lines.add(findSlopes(point, points));
-		// }
-
-		outputLines(findSlopes(points));
 
 	}
 
