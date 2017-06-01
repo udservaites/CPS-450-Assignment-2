@@ -12,16 +12,16 @@ This class is the data structure that the entire program revolves around. The cl
 Point represents points on a coordinate plane. It contains the following methods and
 attributes:
 
-private int x;
-private int y;
-public Point(int x, int y)
-public void draw()
-public void drawTo(Point that)
-public String toString()
-public int compareTo(Point that)
-public double slopeTo(Point that)
-public getX()
-public getY()
+* private int x;
+* private int y;
+* public Point(int x, int y)
+* public void draw()
+* public void drawTo(Point that)
+* public String toString()
+* public int compareTo(Point that)
+* public double slopeTo(Point that)
+* public getX()
+* public getY()
 
 
 ## Class: Brute
@@ -32,9 +32,9 @@ this cases required using four nested for loops, which makes it a costly
 algorithm. This program runs at O(n^4) time. 
 Contains the following methods:
 
-public static ArrayList<Point> readInput(String filepath)
-public static void outputLines(ArrayList<ArrayList<Point>> pointsList)
-public static ArrayList<ArrayList<Point>> checkSlopes(Point[] points)
+* public static ArrayList<Point> readInput(String filepath)
+* public static void outputLines(ArrayList<ArrayList<Point>> pointsList)
+* public static ArrayList<ArrayList<Point>> checkSlopes(Point[] points)
 
 
 ## Class: Fast
@@ -56,9 +56,9 @@ debug the program so it would display the correct output. So far, just with my t
 does not output anything. 
 Contains the following methods: 
 
-public static ArrayList<ArrayList<Point>> findSlopes(ArrayList<Point> points)
-public static ArrayList<Point> readInput(String filepath)
-public static void outputLines(ArrayList<ArrayList<Point>> pointsList)
+* public static ArrayList<ArrayList<Point>> findSlopes(ArrayList<Point> points)
+* public static ArrayList<Point> readInput(String filepath)
+* public static void outputLines(ArrayList<ArrayList<Point>> pointsList)
 
 
 ## Class: StdDraw
